@@ -1,0 +1,40 @@
+from psaw import PushshiftAPI
+import datetime
+import pandas as pd
+
+api = PushshiftAPI()
+
+today = datetime.datetime.now()
+d = datetime.timedelta(days = 30)
+a = today - d
+a = a.timestamp()
+start_epoch = int(a)
+
+
+hot_subreddit= api.search_submissions(after=start_epoch,
+                            subreddit='Bitcoincash',
+                            sort_type='score', sort='desc',
+                            filter=['title','score','selftext'],
+                            limit=1000)
+
+topics_dict = {"title":[],\
+               "score":[],\
+               "body":[],\
+               "date":[]}
+
+    
+for submission in hot_subreddit:
+    #print(submission)"
+    #print(submission.title)
+    topics_dict["title"].append(submission.title)
+    topics_dict["score"].append(submission.score)
+    topics_dict["date"].append(submission.created)
+    topics_dict["body"].append(submission.selftext)   
+
+
+topics_data = pd.DataFrame(topics_dict)
+
+
+print(topics_data)
+
+df = topics_data
