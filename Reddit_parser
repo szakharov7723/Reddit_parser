@@ -5,10 +5,10 @@ import pandas as pd
 api = PushshiftAPI()
 
 today = datetime.datetime.now()
-d = datetime.timedelta(days = 30)
-a = today - d
-a = a.timestamp()
-start_epoch = int(a)
+d = datetime.timedelta(days = 1)
+yesterday = today - d
+yesterday = yesterday.timestamp()
+start_epoch = int(yesterday)
 
 
 hot_subreddit= api.search_submissions(after=start_epoch,
@@ -16,7 +16,7 @@ hot_subreddit= api.search_submissions(after=start_epoch,
                             sort_type='score', sort='desc',
                             filter=['title','score','selftext'],
                             limit=1000)
-
+#limit for request is 1000
 topics_dict = {"title":[],\
                "score":[],\
                "body":[],\
@@ -24,17 +24,12 @@ topics_dict = {"title":[],\
 
     
 for submission in hot_subreddit:
-    #print(submission)"
-    #print(submission.title)
     topics_dict["title"].append(submission.title)
     topics_dict["score"].append(submission.score)
-    topics_dict["date"].append(submission.created)
+    topics_dict["date"].append(submission.created_utc)
     topics_dict["body"].append(submission.selftext)   
 
 
 topics_data = pd.DataFrame(topics_dict)
-
-
-print(topics_data)
 
 df = topics_data
