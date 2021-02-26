@@ -1,0 +1,21 @@
+import azure.cosmos.cosmos_client as cosmos_client
+import azure.cosmos.exceptions as exceptions
+from azure.cosmos.partition_key import PartitionKey
+import json
+
+
+
+client = cosmos_client.CosmosClient("https://trade-parser.documents.azure.com:443/","{APIkey")
+db = client.create_database_if_not_exists(id= "BCHSentimentDatabase")
+
+container = db.create_container_if_not_exists(id="APIparsedBCHreddit",partition_key=PartitionKey(path ='/date',kind ='Hash'))
+
+
+# load data to nosql
+
+for i in range(0,data_load.shape[0]):
+    
+    data_dict = dict(data_load.iloc[i,:])
+    data_dict = json.dumps(data_dict, default =str)
+    updated_item = container.upsert_item(json.loads(data_dict))
+    updated_item
