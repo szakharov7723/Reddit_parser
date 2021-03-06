@@ -1,4 +1,4 @@
-# Reddit_parser-before-update-
+# Reddit_parser
 This repo shows how to parse Reddit for titles, body,score and date, giving sentiment to parsed data and loading it to NoSQL 
 
 
